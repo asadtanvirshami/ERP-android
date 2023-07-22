@@ -6,11 +6,15 @@ const InputIcon = ({
   placeholderTextColor,
   keyboardType,
   source,
+  value,
+  onChangeText
 }: any) => {
   return (
     <View style={styles.inputContainer}>
       <Image style={styles.icon} source={source} />
       <TextInput
+          value={value}
+          onChangeText={onChangeText}
         style={styles.input}
         keyboardType={keyboardType}
         autoCapitalize="none"

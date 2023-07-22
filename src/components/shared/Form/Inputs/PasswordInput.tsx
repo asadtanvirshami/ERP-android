@@ -7,18 +7,29 @@ import {
 } from 'react-native';
 import React from 'react';
 
-const PasswordInput = ({placeholder, placeholderTextColor, source}: any) => {
+const PasswordInput = ({
+  placeholder,
+  placeholderTextColor,
+  source,
+  value,
+  onChangeText,
+}: any) => {
   return (
     <View style={styles.inputContainer}>
       <Image style={styles.icon} source={source} />
       <TextInput
+        value={value}
+        onChangeText={onChangeText}
         style={styles.input}
         placeholder={placeholder}
         placeholderTextColor={placeholderTextColor}
         secureTextEntry={true}
       />
       <TouchableOpacity style={styles.eyeIconContainer}>
-        <Image style={styles.eye} source={require('../../../../../assets/images/png/eyelock.png')} />
+        <Image
+          style={styles.eye}
+          source={require('../../../../../assets/images/png/eyelock.png')}
+        />
       </TouchableOpacity>
     </View>
   );
@@ -32,9 +43,7 @@ const styles = StyleSheet.create({
     width: 20,
     position: 'absolute',
   },
-  icon:{
-
-  },
+  icon: {},
   inputContainer: {
     margin: 8,
     flexDirection: 'row',
@@ -62,5 +71,4 @@ const styles = StyleSheet.create({
   eyeIconContainer: {
     padding: 10,
   },
-  
 });
