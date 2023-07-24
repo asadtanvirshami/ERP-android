@@ -19,21 +19,22 @@ import Button from '../../shared/Form/Buttons/Button';
 
 import { AccountLogin } from '../../../utils/api/Auth';
 import { loginSuccess } from '../../../redux/actions/userActions/userActions';
+import LoaderButton from '../../shared/Form/Buttons/LoaderButton';
 
 const Login = ({ setCreateAccount,setForgetPassword}:any) => {
   const [state, setState] = useState({email:'',password:''})
-  const [connected,setConnected] = useState(false)
-
-  const route = useRoute() 
   
-  const userData = useSelector((state: any) => state.user.user);
+  const [connected,setConnected] = useState(false)
+  const [loading,setLoading] = useState(false)
+  
   const dispatch = useDispatch()
 
   const handleSubmit = async()=>{
     if(state.email.length>3 && state.password.length>2){
-      if(state.email.includes('@')){
+      if(!state.email.includes('@')){
         Alert.alert("Email Error","Please Enter a valid email");
-      }{
+      }else{
+        setLoading(true)
         const AccountDetail = await AccountLogin(state)
         if(AccountDetail){
           if(AccountDetail.error===null){
@@ -46,6 +47,7 @@ const Login = ({ setCreateAccount,setForgetPassword}:any) => {
             console.log('error')
           }
         }
+        setLoading(false)
       }
     }
   }
@@ -92,7 +94,7 @@ const Login = ({ setCreateAccount,setForgetPassword}:any) => {
         </TouchableOpacity>
       </View>
       <View style={styles.section_2}>
-        <Button text={'LOGIN'} onPress={handleSubmit}/>
+        {!loading?<Button text={'LOGIN'} onPress={handleSubmit}/>:<LoaderButton/>}
       </View>
       <View>
       <Image

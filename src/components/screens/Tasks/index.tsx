@@ -1,11 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View,TouchableOpacity } from 'react-native'
 import React from 'react'
 
-const Tasks = () => {
+const Tasks = ({navigation}:any) => {
   return (
-    <View>
-      <Text>Tasks</Text>
-    </View>
+    <TouchableOpacity onPress={()=>{navigation.navigate("Main")}}>
+      <Text style={{color:'red'}}>Tasks</Text>
+    </TouchableOpacity>
   )
 }
 
