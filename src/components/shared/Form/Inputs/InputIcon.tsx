@@ -7,7 +7,7 @@ const InputIcon = ({
   keyboardType,
   source,
   value,
-  onChangeText
+  onChangeText,
 }: any) => {
   return (
     <View style={styles.inputContainer}>

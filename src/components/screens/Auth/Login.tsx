@@ -20,10 +20,7 @@ import Button from '../../shared/Form/Buttons/Button';
 import { AccountLogin } from '../../../utils/api/Auth';
 import { loginSuccess } from '../../../redux/actions/userActions/userActions';
 
-import { userVerification } from '../../../functions/UserVerification'
-import checkNetConnection from '../../../functions/CheckNetConnection'; 
-
-const Login = ({navigation}:any) => {
+const Login = ({ setCreateAccount,setForgetPassword}:any) => {
   const [state, setState] = useState({email:'',password:''})
   const [connected,setConnected] = useState(false)
 
@@ -33,40 +30,25 @@ const Login = ({navigation}:any) => {
   const dispatch = useDispatch()
 
   const handleSubmit = async()=>{
-    if(state.email.length>2 && state.password.length>2){
-      if(!state.email.includes('@')){
+    if(state.email.length>3 && state.password.length>2){
+      if(state.email.includes('@')){
         Alert.alert("Email Error","Please Enter a valid email");
-      }
-      const AccountDetail = await AccountLogin(state)
-      if(AccountDetail){
-        if(AccountDetail.error===null){
-          AsyncStorage.setItem('@token',AccountDetail.token)
-          const token: any = jwt_decode(AccountDetail.token);
-          dispatch(loginSuccess(token, token.type));
-        }else if(AccountDetail.message == 'invalid'){
-          Alert.alert("Email Error","Email not exists. Please try again.");
-        }else if(AccountDetail.error != null){
-          console.log('error')
+      }{
+        const AccountDetail = await AccountLogin(state)
+        if(AccountDetail){
+          if(AccountDetail.error===null){
+            AsyncStorage.setItem('@token',AccountDetail.token)
+            const token: any = jwt_decode(AccountDetail.token);
+            dispatch(loginSuccess(token, token.type));
+          }else if(AccountDetail.message == 'invalid'){
+            Alert.alert("Email Error","Email not exists. Please try again.");
+          }else if(AccountDetail.error != null){
+            console.log('error')
+          }
         }
       }
     }
   }
-
-  useEffect(() => {
-    checkNetConnection(setConnected,navigation,route)//connection check
-    async function VerifyUser() {
-      let token = await AsyncStorage.getItem('@token') || '';
-      console.log(token)
-      userVerification(token).then((r:any) => {
-        //customer verification
-        if (r?.isLoggedIn === true) {
-          navigation.navigate('App', { screen: 'Dashboard' });
-        }
-      });
-    }
-    VerifyUser();
-    console.log(connected)
-  }, [])
 
   return (
     <ImageBackground
@@ -102,15 +84,21 @@ const Login = ({navigation}:any) => {
         }))}
       />
       <View style={{flexDirection: 'row'}}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>{setCreateAccount(true)}}>
           <Text style={styles.text}>Create a new account.</Text>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>{setForgetPassword(true)}}>
           <Text style={styles.text}>Forget password.</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.section_2}>
         <Button text={'LOGIN'} onPress={handleSubmit}/>
+      </View>
+      <View>
+      <Image
+          style={styles.blob_2}
+          source={require('../../../../assets/images/png/blobsm.png')}
+        />
       </View>
     </ImageBackground>
   );
@@ -132,7 +120,14 @@ const styles = StyleSheet.create({
     bottom: 0,
     position: 'absolute',
   },
-
+  blob_2:{
+    height: 230,
+    width: 300,
+    alignSelf:"baseline",
+    right: 0,
+    justifyContent:'space-evenly',
+    position: 'absolute', 
+  },
   heading: {
     color: 'black',
     fontSize: 35,
@@ -156,5 +151,5 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginLeft: 20,
   },
-  section_2: {margin: 30},
+  section_2: {margin: 30, backgroundColor:'blue'},
 });

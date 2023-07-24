@@ -1,23 +1,39 @@
-import { StyleSheet, Text, View,BackHandler } from 'react-native'
-import React,{useLayoutEffect,useState,useEffect} from 'react'
-import { useRoute} from '@react-navigation/native';
+import {StyleSheet, BackHandler} from 'react-native';
+import React, {useEffect} from 'react';
 
-import checkNetConnection from '../../../functions/CheckNetConnection'
-import Header from '../../shared/Header';
+//Components
+import Agent from './Agent/Agent';
+import Admin from './Admin/Admin';
+//Redux
+import {useSelector} from 'react-redux';
 
-const Dashboard = ({navigation}:any) => {
-    useEffect(() => {
-        const backHandler = BackHandler.addEventListener('hardwareBackPress', () => true)
-        return () => backHandler.remove()
-      }, []);
-      
+const Dashboard = ({navigation}: any) => {
+  const type = useSelector((state: any) => state.user.user.type);
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => true,
+    );
+    return () => backHandler.remove();
+  }, []);
+
   return (
     <>
-      <Text onPress={()=>{navigation.navigate("Admin")}}>TExt</Text>
+      {type == 'admin' && (
+        <>
+          <Admin navigation={navigation} />
+        </>
+      )}
+      {type == 'agent' && (
+        <>
+          <Agent />
+        </>
+      )}
     </>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

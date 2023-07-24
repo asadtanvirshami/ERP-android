@@ -13,7 +13,6 @@ import { useSelector,useDispatch } from "react-redux";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
 //Components Imports
-import Input from '../../shared/Form/Inputs/Input';
 import InputIcon from '../../shared/Form/Inputs/InputIcon';
 import PasswordInput from '../../shared/Form/Inputs/PasswordInput';
 import Button from '../../shared/Form/Buttons/Button';
@@ -21,7 +20,7 @@ import Button from '../../shared/Form/Buttons/Button';
 import { AccountLogin } from '../../../utils/api/Auth';
 import { loginSuccess } from '../../../redux/actions/userActions/userActions';
 
-const Login = ({ setCreateAccount,setForgetPassword}:any) => {
+const ForgetPassword = ({ setForgetPassword}:any) => {
   const [state, setState] = useState({email:'',password:''})
   const [connected,setConnected] = useState(false)
 
@@ -62,36 +61,8 @@ const Login = ({ setCreateAccount,setForgetPassword}:any) => {
           source={require('../../../../assets/images/png/blob.png')}
         />
       </View>
-      <Text style={styles.heading}>Sign Up</Text>
-      <Text style={styles.small}>Create your new account.</Text>
-      <Input
-        placeholder="First Name"
-        placeholderTextColor="gray"
-        value={state.email}
-        onChangeText={(x:any)=> setState((prev) => ({
-          ...prev,
-          email: x,
-        }))}
-      />
-      <Input
-        placeholder="Last Name"
-        placeholderTextColor="gray"
-        value={state.email}
-        onChangeText={(x:any)=> setState((prev) => ({
-          ...prev,
-          email: x,
-        }))}
-      />
-      <InputIcon
-       source={require('../../../../assets/images/png/phone.png')}
-        placeholder="Phone"
-        placeholderTextColor="gray"
-        value={state.email}
-        onChangeText={(x:any)=> setState((prev) => ({
-          ...prev,
-          email: x,
-        }))}
-      />
+      <Text style={styles.heading}>Reset Password</Text>
+      <Text style={styles.small}>Please enter your email to reset.</Text>
       <InputIcon
         source={require('../../../../assets/images/png/email.png')}
         placeholder="Email"
@@ -102,23 +73,13 @@ const Login = ({ setCreateAccount,setForgetPassword}:any) => {
           email: x,
         }))}
       />
-      <PasswordInput
-        source={require('../../../../assets/images/png/lock.png')}
-        placeholder="Password"
-        placeholderTextColor="gray"
-        value={state.password}
-        onChangeText={(x:any)=> setState((prev) => ({
-          ...prev,
-          password: x,
-        }))}
-      />
       <View style={{left:30, top:3, alignSelf:'flex-start'}}>
-        <TouchableOpacity onPress={()=>{setCreateAccount(false)}}>
-          <Text style={styles.text}>Already have an account.</Text>
+        <TouchableOpacity onPress={()=>{setForgetPassword(false)}}>
+          <Text style={styles.text}>Login to an account.</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.section_2}>
-        <Button text={'CREATE ACCOUNT'} onPress={handleSubmit}/>
+        <Button text={'PROCEED'} onPress={handleSubmit}/>
       </View>
       <View>
       <Image
@@ -130,7 +91,7 @@ const Login = ({ setCreateAccount,setForgetPassword}:any) => {
   );
 };
 
-export default Login;
+export default ForgetPassword;
 
 const styles = StyleSheet.create({
   container: {
@@ -141,16 +102,17 @@ const styles = StyleSheet.create({
   blob: {
     height: 300,
     width: 300,
-    top: -120,
+    top: -245,
     left: 0,
     bottom: 0,
     position: 'absolute',
   },
   blob_2:{
-    height: 128,
+    height: 230,
     width: 300,
+    alignSelf:"baseline",
     right: 0,
-    top:-40,
+    justifyContent:'space-evenly',
     position: 'absolute', 
   },
   heading: {
@@ -167,7 +129,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     fontFamily: 'Montserrat-MediumItalic',
     left: 45,
-    marginBottom: 20,
+    marginBottom: 40,
   },
   text: {
     color: 'black',
@@ -176,5 +138,5 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginLeft: 20,
   },
-  section_2: {margin: 30, },
+  section_2: {margin: 30},
 });

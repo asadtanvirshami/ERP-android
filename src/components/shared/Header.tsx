@@ -6,8 +6,8 @@ const Header = (navigation:any) => {
   return (
     <> 
      <View style={{flexDirection:'row', backgroundColor:'red'}}>
-        <TouchableOpacity style={{top:25,left:20}} onPress={()=>{navigation.goBack()}}>
-        <Text>going</Text>
+        <TouchableOpacity style={{top:25,left:20}} onPress={()=>navigation.goBack()}>
+        <Text style={{color:'black'}}>going</Text>
         </TouchableOpacity>
         <View style={{left:47}}>
         <Text>going</Text>
