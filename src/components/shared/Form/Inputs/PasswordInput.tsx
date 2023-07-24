@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import React from 'react';
+import React,{useState} from 'react';
 
 const PasswordInput = ({
   placeholder,
@@ -14,6 +14,7 @@ const PasswordInput = ({
   value,
   onChangeText,
 }: any) => {
+  const [hide, setHide] =  useState(false)
   return (
     <View style={styles.inputContainer}>
       <Image style={styles.icon} source={source} />
@@ -23,9 +24,9 @@ const PasswordInput = ({
         style={styles.input}
         placeholder={placeholder}
         placeholderTextColor={placeholderTextColor}
-        secureTextEntry={true}
+        secureTextEntry={hide ? false : true}
       />
-      <TouchableOpacity style={styles.eyeIconContainer}>
+      <TouchableOpacity onPress={()=>{setHide((prev:any) => !prev)}} style={styles.eyeIconContainer}>
         <Image
           style={styles.eye}
           source={require('../../../../../assets/images/png/eyelock.png')}
