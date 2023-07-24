@@ -151,5 +151,5 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginLeft: 20,
   },
-  section_2: {margin: 30, backgroundColor:'blue'},
+  section_2: {margin: 30},
 });
