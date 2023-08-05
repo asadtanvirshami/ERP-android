@@ -1,22 +1,35 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import React from 'react'
+import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
+import React from 'react';
 
-const Header = (navigation:any) => {
-  
+const Header = ({goBack}: any) => {
+  // 500: "#ED213A",
+  // 700: "#93291E",
   return (
-    <> 
-     <View style={{flexDirection:'row', backgroundColor:'red'}}>
-        <TouchableOpacity style={{top:25,left:20}} onPress={()=>navigation.goBack()}>
-        <Text style={{color:'black'}}>going</Text>
+     <View style={styles.header}>
+        <TouchableOpacity onPress={goBack}>
+          <Image
+            resizeMode="contain"
+            style={styles.image}
+            source={require('../../../assets/images/png/back.png')}
+          />
         </TouchableOpacity>
-        <View style={{left:47}}>
-        <Text>going</Text>
-        </View>
-    </View>
-    </>
-  )
-}
+      </View>
+  );
+};
 
-export default Header
+export default Header;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    borderBottomColor:'silver',
+    borderBottomWidth:1,
+    backgroundColor: 'white',
+    padding: 9,
+
+  },
+  image: {
+    height: 27,
+    width: 27,
+  },
+});

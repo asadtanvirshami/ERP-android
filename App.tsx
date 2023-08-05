@@ -146,7 +146,7 @@ const AppNavigation = () => {
   console.log(currentUser);
   // Use an effect to subscribe to changes to the user's authentication status
   useEffect(() => {
-    async function VerifyUser() {
+    async function VerifyUser() { 
       let token = (await AsyncStorage.getItem('@token')) || '';
       userVerification(token).then((r: any) => {
         //customer verification
