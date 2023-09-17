@@ -147,9 +147,10 @@ const AppNavigation = () => {
   // Use an effect to subscribe to changes to the user's authentication status
   useEffect(() => {
     async function VerifyUser() { 
-      let token = (await AsyncStorage.getItem('@token')) || '';
+      let token = (await AsyncStorage.getItem('@token')) || "x";
       userVerification(token).then((r: any) => {
         //customer verification
+        console.log(token)
         if (r?.isLoggedIn === true) {
           navigationRef.current?.navigate('App', {screen: 'Dashboard'});
         } else {
