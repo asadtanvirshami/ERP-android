@@ -1,27 +1,50 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
 
-import {useSelector} from 'react-redux';
+import UserSession from '../../../functions/UserSession';
 
 const TopSection = () => {
-  const user = useSelector((state: any) => state.user.user);
+  const [user_, setUser_] = useState<any>({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await UserSession();
+        if (data) {
+          setUser_(data);
+        } else {
+          setUser_({
+            name: '',
+            companyName: '',
+            designation: '',
+            email: '',
+          });
+        }
+        console.log('User data:', user_);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <View style={styles.container}>
-      <View style={{flexDirection: 'row'}}>
-        <View style={{marginTop: 10, padding: 8}}>
-          <Text style={{fontSize:18, color:'black'}}>Welcome,</Text>
-          <Text style={styles.heading}>{user?.name.toUpperCase('0')}</Text>
+      <View style={{ flexDirection: 'row' }}>
+        <View style={{ marginTop: 10, padding: 8 }}>
+          <Text style={{ fontSize: 18, color: 'black' }}>Welcome,</Text>
+          <Text style={styles.heading}>{user_?.name?.toUpperCase()}</Text>
           <Text style={styles.sub_heading}>
-            {user?.companyName.toUpperCase('0')} -
-            <Text style={{fontSize: 19}}> {user?.designation}</Text>
+            {user_?.companyName?.toUpperCase()} -
+            <Text style={{ fontSize: 19 }}> {user_?.designation}</Text>
           </Text>
-          <Text style={{color: 'gray'}}>{user?.email}</Text>
+          <Text style={{ color: 'gray' }}>{user_?.email}</Text>
         </View>
         <View style={styles.image_view}>
           <View style={styles.avatar_section}>
             <Text style={styles.avatar_char}>
-              {user?.name.charAt(0).toUpperCase()}
+              {user_?.name?.charAt(0).toUpperCase()}
             </Text>
           </View>
         </View>
@@ -30,7 +53,8 @@ const TopSection = () => {
   );
 };
 
-export default TopSection;
+const TopSectionHOC = React.memo(TopSection);
+export default TopSectionHOC;
 
 const styles = StyleSheet.create({
   container: {
@@ -60,7 +84,7 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 50,
-    backgroundColor: '#db274b', // You can set your desired background color here
+    backgroundColor: '#db274b',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -77,6 +101,6 @@ const styles = StyleSheet.create({
   sub_heading: {
     color: 'black',
     fontSize: 17,
-    marginTop:8
+    marginTop: 8,
   },
 });

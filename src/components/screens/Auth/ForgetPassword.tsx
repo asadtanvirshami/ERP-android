@@ -9,7 +9,6 @@ import {
   Alert
 } from 'react-native';
 import jwt_decode from "jwt-decode";
-import { useSelector,useDispatch } from "react-redux";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
 //Components Imports
@@ -25,9 +24,7 @@ const ForgetPassword = ({ setForgetPassword}:any) => {
   const [connected,setConnected] = useState(false)
 
   const route = useRoute() 
-  
-  const userData = useSelector((state: any) => state.user.user);
-  const dispatch = useDispatch()
+
 
   const handleSubmit = async()=>{
     if(state.email.length>=3 && state.password.length>=3){
@@ -39,7 +36,6 @@ const ForgetPassword = ({ setForgetPassword}:any) => {
           if(AccountDetail.error===null){
             AsyncStorage.setItem('@token',AccountDetail.token)
             const token: any = jwt_decode(AccountDetail.token);
-            dispatch(loginSuccess(token, token.type));
           }else if(AccountDetail.message == 'invalid'){
             Alert.alert("Email Error","Email not exists. Please try again.");
           }else if(AccountDetail.error != null){

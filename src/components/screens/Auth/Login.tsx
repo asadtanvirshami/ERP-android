@@ -9,16 +9,15 @@ import {
   Alert
 } from 'react-native';
 import jwt_decode from "jwt-decode";
-import { useSelector,useDispatch } from "react-redux";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
+
 //Components Imports
 import InputIcon from '../../shared/Form/Inputs/InputIcon';
 import PasswordInput from '../../shared/Form/Inputs/PasswordInput';
 import Button from '../../shared/Form/Buttons/Button';
 
 import { AccountLogin } from '../../../utils/api/Auth';
-import { loginSuccess } from '../../../redux/actions/userActions/userActions';
 import LoaderButton from '../../shared/Form/Buttons/LoaderButton';
 
 const Login = ({ setCreateAccount,setForgetPassword}:any) => {
@@ -27,7 +26,6 @@ const Login = ({ setCreateAccount,setForgetPassword}:any) => {
   const [connected,setConnected] = useState(false)
   const [loading,setLoading] = useState(false)
   
-  const dispatch = useDispatch()
 
   const handleSubmit = async()=>{
     if(state.email.length>3 && state.password.length>2){
@@ -40,7 +38,7 @@ const Login = ({ setCreateAccount,setForgetPassword}:any) => {
           if(AccountDetail.error===null){
             AsyncStorage.setItem('@token',AccountDetail.token)
             const token: any = jwt_decode(AccountDetail.token);
-            dispatch(loginSuccess(token, token.type));
+            AsyncStorage.setItem('@user_',token)
           }else if(AccountDetail.message == 'invalid'){
             Alert.alert("Email Error","Email not exists. Please try again.");
           }else if(AccountDetail.error != null){

@@ -3,14 +3,14 @@ import {Text, useColorScheme, View, SafeAreaView} from 'react-native';
 
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-//Navigation Import
+
 import {
   NavigationContainer,
   NavigationContainerRef,
 } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-//Screens Import
+
 import Auth from './src/components/screens/Auth/index';
 import Dashboard from './src/components/screens/Dashboard/index';
 import Tasks from './src/components/screens/Tasks/index';
@@ -19,12 +19,9 @@ import Profile from './src/components/screens/Profile/index';
 
 import {userVerification} from './src/functions/UserVerification';
 
-import {Provider} from 'react-redux';
-import {store, persistor} from './src/redux/store';
-import {PersistGate} from 'redux-persist/integration/react';
-import {useSelector} from 'react-redux';
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import jwt_decode from 'jwt-decode';
+
 import Loader from './src/components/shared/LoadingTheme';
 
 const Stack = createNativeStackNavigator();
@@ -141,31 +138,38 @@ const AppNavigation = () => {
 
   const navigationRef =
     useRef<NavigationContainerRef<RootNavigationParamList>>(null);
-  const currentUser = useSelector((state: any) => state.user.user);
-
-  console.log(currentUser);
-  // Use an effect to subscribe to changes to the user's authentication status
   useEffect(() => {
-    async function VerifyUser() { 
-      let token = (await AsyncStorage.getItem('@token')) || "x";
-      userVerification(token).then((r: any) => {
-        //customer verification
-        console.log(token)
-        if (r?.isLoggedIn === true) {
-          navigationRef.current?.navigate('App', {screen: 'Dashboard'});
-        } else {
-          navigationRef.current?.navigate('Auth');
-        }
-      });
+    async function VerifyUser() {
+      try {
+        let token:any = await AsyncStorage.getItem('@token');
+        const userData = jwt_decode(token);
+        // Stringify the userData object before storing it
+        await AsyncStorage.setItem('@user_', JSON.stringify(userData));
+        userVerification(token).then((r: any) => {
+          // Customer verification
+          if (r?.isLoggedIn === true) {
+            navigationRef.current?.navigate('App', { screen: 'Dashboard' });
+          } else {
+            navigationRef.current?.navigate('Auth');
+          }
+        });
+    
+        setLoading(false);
+      } catch (error) {
+        console.error('Error:', error);
+        setLoading(false);
+      }
     }
     VerifyUser();
-    setLoading(false); 
-  }, [currentUser]);
+
+  }, []);
 
   return (
     <>
       {loading ? (
-        <Loader />
+        <NavigationContainer ref={navigationRef}>
+          <Loader />
+        </NavigationContainer>
       ) : (
         <NavigationContainer ref={navigationRef}>
           <RootStackScreen />
@@ -181,13 +185,7 @@ const App = () => {
       <>
         <SafeAreaProvider>
           <GestureHandlerRootView style={{flex: 1}}>
-            <Provider store={store}>
-              <PersistGate
-                loading={<Text>Loading...</Text>}
-                persistor={persistor}>
-                <AppNavigation />
-              </PersistGate>
-            </Provider>
+            <AppNavigation />
           </GestureHandlerRootView>
         </SafeAreaProvider>
       </>

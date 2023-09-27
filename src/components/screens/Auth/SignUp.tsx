@@ -19,7 +19,6 @@ import PasswordInput from '../../shared/Form/Inputs/PasswordInput';
 import Button from '../../shared/Form/Buttons/Button';
 
 import { AccountLogin } from '../../../utils/api/Auth';
-import { loginSuccess } from '../../../redux/actions/userActions/userActions';
 
 const Login = ({ setCreateAccount,setForgetPassword}:any) => {
   const [state, setState] = useState({email:'',password:''})
@@ -27,7 +26,6 @@ const Login = ({ setCreateAccount,setForgetPassword}:any) => {
 
   const route = useRoute() 
   
-  const userData = useSelector((state: any) => state.user.user);
   const dispatch = useDispatch()
 
   const handleSubmit = async()=>{
@@ -40,7 +38,7 @@ const Login = ({ setCreateAccount,setForgetPassword}:any) => {
           if(AccountDetail.error===null){
             AsyncStorage.setItem('@token',AccountDetail.token)
             const token: any = jwt_decode(AccountDetail.token);
-            dispatch(loginSuccess(token, token.type));
+            AsyncStorage.setItem('@user_',token)
           }else if(AccountDetail.message == 'invalid'){
             Alert.alert("Email Error","Email not exists. Please try again.");
           }else if(AccountDetail.error != null){

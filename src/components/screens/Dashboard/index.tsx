@@ -5,10 +5,11 @@ import React, {useEffect} from 'react';
 import Agent from './Agent/Agent';
 import Admin from './Admin/Admin';
 //Redux
-import {useSelector} from 'react-redux';
 
 const Dashboard = ({navigation}: any) => {
-  const type = useSelector((state: any) => state.user.user.type);
+ 
+
+
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
@@ -20,7 +21,8 @@ const Dashboard = ({navigation}: any) => {
 
   return (
     <>
-      {type == 'admin' && (
+    <Admin navigation={navigation} />
+      {/* {type == 'admin' && (
         <>
           <Admin navigation={navigation} />
         </>
@@ -29,7 +31,7 @@ const Dashboard = ({navigation}: any) => {
         <>
           <Agent />
         </>
-      )}
+      )} */}
     </>
   );
 };
